@@ -16,8 +16,8 @@ final class VersionAction
 
     public function __invoke(): ResponseInterface
     {
-        $composerFile = dirname(__DIR__, 3) . '/composer.json';
-
+        $composerFile = dirname(__DIR__, 2) . '/composer.json';
+        
         if (!is_readable($composerFile)) {
             return $this->jsonResponse([
                 'status' => 'error',
