@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace RadinTech\SystemInfo\Api;
 
+use Composer\InstalledVersions;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 
 final class VersionAction
 {
+    private const PACKAGE_NAME = 'radintech/system-info-module';
+
     public function __construct(
         private ResponseFactoryInterface $responseFactory,
     ) {
@@ -16,42 +19,21 @@ final class VersionAction
 
     public function __invoke(): ResponseInterface
     {
-        $composerFile = dirname(__DIR__, 2) . '/composer.json';
-        
-        if (!is_readable($composerFile)) {
-            return $this->jsonResponse([
-                'status' => 'error',
-                'message' => 'Module metadata is unavailable.',
-            ], 500);
-        }
-
-        try {
-            $composer = json_decode(
-                (string) file_get_contents($composerFile),
-                true,
-                512,
-                JSON_THROW_ON_ERROR,
-            );
-        } catch (\JsonException) {
-            return $this->jsonResponse([
-                'status' => 'error',
-                'message' => 'Module metadata is invalid.',
-            ], 500);
-        }
-
-        $version = $composer['version'] ?? null;
+        $version = InstalledVersions::isInstalled(self::PACKAGE_NAME)
+            ? InstalledVersions::getPrettyVersion(self::PACKAGE_NAME)
+            : null;
 
         if (!is_string($version) || $version === '') {
             return $this->jsonResponse([
                 'status' => 'error',
-                'message' => 'Module version is not configured.',
+                'message' => 'Module version is unavailable.',
             ], 500);
         }
 
         return $this->jsonResponse([
             'status' => 'success',
             'data' => [
-                'module' => $composer['name'] ?? 'system-info',
+                'module' => self::PACKAGE_NAME,
                 'version' => $version,
             ],
         ]);
