@@ -6,18 +6,22 @@ namespace RadinTech\SystemInfo\Migration;
 
 use Yiisoft\Db\Migration\MigrationBuilder;
 use Yiisoft\Db\Migration\RevertibleMigrationInterface;
+use Yiisoft\Db\Schema\Column\ColumnBuilder;
 
 final class M20261108182300CreateSystemInfoLogs implements RevertibleMigrationInterface
 {
     public function up(MigrationBuilder $b): void
     {
-        $b->createTable('system_info_logs', [
-            'id' => $b->primaryKey(),
-            'component' => $b->string(100)->notNull(),
-            'version' => $b->string(50)->notNull(),
-            'details' => $b->text(),
-            'created_at' => $b->dateTime()->notNull(),
-        ]);
+        $b->createTable(
+            'system_info_logs',
+            [
+                'id' => ColumnBuilder::primaryKey(),
+                'component' => ColumnBuilder::string(100)->notNull(),
+                'version' => ColumnBuilder::string(50)->notNull(),
+                'details' => ColumnBuilder::text(),
+                'created_at' => ColumnBuilder::datetime()->notNull(),
+            ],
+        );
     }
 
     public function down(MigrationBuilder $b): void
