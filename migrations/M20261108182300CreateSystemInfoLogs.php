@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace RadinTech\SystemInfo\Migration;
+namespace App\Migration;
 
 use Yiisoft\Db\Migration\MigrationBuilder;
+use Yiisoft\Db\Migration\RevertibleMigrationInterface;
 
-final class M20261108182300CreateSystemInfoLogs
+final class M20261108182300CreateSystemInfoLogs implements RevertibleMigrationInterface
 {
     public function up(MigrationBuilder $b): void
     {
