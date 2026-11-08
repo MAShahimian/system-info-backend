@@ -8,9 +8,10 @@
   },
   "autoload": {
     "psr-4": {
-      "RadinTech\\SystemInfo\\": "src/"
+      "RadinTech\\SystemInfo\\": "src/",
+      "RadinTech\\SystemInfo\\Migration\\": "migrations/"
     }
-  },
+  },  
   "extra": {
     "config-plugin": {
       "routes": "config/routes.php"
